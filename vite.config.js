@@ -2,6 +2,16 @@ import htmlPurge from "vite-plugin-html-purgecss";
 import handlebars from "vite-plugin-handlebars";
 
 const path = require("path");
+
+const pageData = {
+  "/index.html": {
+    title: "Bootstrap and Vite",
+  },
+  "/src/pages/category.html": {
+    title: "Category Page",
+  },
+};
+
 export default {
   root: path.resolve(__dirname, "src"),
   resolve: {
@@ -11,7 +21,12 @@ export default {
   },
   plugins: [
     htmlPurge(),
-    handlebars({ partialDirectory: path.resolve(__dirname, "src/partials") }),
+    handlebars({
+      context(pagePath) {
+        return pageData[pagePath];
+      },
+      partialDirectory: path.resolve(__dirname, "src/partials"),
+    }),
   ],
   server: {
     port: 8080,
